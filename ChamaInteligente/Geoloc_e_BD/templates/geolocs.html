@@ -18,7 +18,7 @@
 
         function enviarLocalizacao(latitude, longitude) {
             let x = Math.random() * 1000;
-            var num_str = x.toString()
+            var num_str = Math.floor(x).toString()
             fetch("http://localhost:5000/SalvarLocalizacao", {
                 method: "POST",
                 body: JSON.stringify({
@@ -43,11 +43,25 @@
     <button onclick="obterLocalizacao()">Get LatLong</button>
 
     <div>
-        {% for dado in dados %}
-                <h1>
-                    {{dado}}
-                </h1>
-        {% endfor %}
+        
+        <table>
+            <tr>
+                <th>index</th>
+                <th>idUsuario</th>
+                <th>lat</th>
+                <th>long</th>
+            </tr>
+            {% for dado in dados %}
+            <tr>
+                <td>{{dado[0]}}</td>
+                <td>{{dado[1]}}</td>
+                <td>{{dado[2]}}</td>
+                <td>{{dado[3]}}</td>
+            </tr>
+            {% endfor %}
+        </table>                  
+                
+        
     </div>
 </body>
 </html>
