@@ -19,6 +19,16 @@ def conexao():
     )
     return conn
 
+def matricula_exists(tipo, matricula, conn, cur):
+    query = "SELECT matricula FROM "+tipo+" WHERE matricula = %s;"
+    cur.execute(query, [matricula])
+    dados = cur.fetchall()
+    x = True
+    if len(dados) == 0:
+        x = False
+    return x
+
+
 @app.route("/")
 def index():
     return render_template("login.html")
@@ -31,12 +41,16 @@ def login():
     cur = conn.cursor()
     query = "SELECT nome, senha FROM aluno WHERE nome = %s;"
     cur.execute(query, [nome])
-    dados = cur.fetchall()
-    print(dados)
+    dados = cur.fetchall()    
+    if dados[0][1] == senha:
+        x = True
+    else:
+        x = False
+    print(x)
     conn.commit()
     cur.close()
     conn.close()
-    return render_template("login.html")
+    return render_template("login.html", flag=x)
 
 @app.route("/move_cadastro", methods=["POST","GET"])
 def move_cadastro():
@@ -47,17 +61,24 @@ def cadastro():
     nome = request.form.get('nome')
     senha = request.form.get('senha')
     matricula = request.form.get('matricula')
-    print(nome)
-    print(senha)
     print(matricula)
+    tipo = request.form.get('tipo')
     conn = conexao()    
     cur = conn.cursor()
-    cur.execute("INSERT into aluno (nome, matricula, senha) VALUES(%s,%s,%s)", (nome, matricula, senha))
+    check_matricula = matricula_exists(tipo, matricula, conn, cur)    
+    if check_matricula:
+        flag = check_matricula      
+    else:
+        flag = check_matricula
+        if tipo == 'professor':
+            cur.execute("INSERT into aluno (nome, matricula, senha, tipo) VALUES(%s,%s,%s,%s)", (nome, matricula, senha, '1'))
+        elif tipo == 'aluno':
+            cur.execute("INSERT into professor (nome, matricula, senha, tipo) VALUES(%s,%s,%s,%s)", (nome, matricula, senha, '2'))    
     conn.commit()
     cur.close()
     conn.close()
 
-    return render_template('cadastro.html')
+    return render_template('cadastro.html', flag=flag)
 
 @app.route("/geolocs")
 def geo_locs():
