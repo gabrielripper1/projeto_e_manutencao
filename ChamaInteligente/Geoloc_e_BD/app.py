@@ -41,11 +41,13 @@ def login():
     cur = conn.cursor()
     query = "SELECT nome, senha FROM aluno WHERE nome = %s;"
     cur.execute(query, [nome])
-    dados = cur.fetchall()    
+    dados = cur.fetchall()
+
     if dados[0][1] == senha:
-        x = True
-    else:
         x = False
+    else:
+        x = True
+    
     print(x)
     conn.commit()
     cur.close()
@@ -55,6 +57,10 @@ def login():
 @app.route("/move_cadastro", methods=["POST","GET"])
 def move_cadastro():
     return render_template("cadastro.html")
+
+@app.route("/move_latlong", methods=["POST","GET"])
+def move_latlong():
+    return render_template("geolocs.html")
 
 @app.route("/cadastro", methods=["POST"])
 def cadastro():
@@ -70,9 +76,9 @@ def cadastro():
         flag = check_matricula      
     else:
         flag = check_matricula
-        if tipo == 'professor':
+        if tipo == 'aluno':
             cur.execute("INSERT into aluno (nome, matricula, senha, tipo) VALUES(%s,%s,%s,%s)", (nome, matricula, senha, '1'))
-        elif tipo == 'aluno':
+        elif tipo == 'professor':
             cur.execute("INSERT into professor (nome, matricula, senha, tipo) VALUES(%s,%s,%s,%s)", (nome, matricula, senha, '2'))    
     conn.commit()
     cur.close()
