@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tela Professor</title>
+    <a href="gera_form_cria_turma">Cria turma</a>
+    {% if flag_form:%}
+    <div id="container-cria_turma">
+        <form action="/cria_turma" method="post">
+            <section id="cria_turma">
+                <label for="cod_disciplina">Código da disciplina:</label>
+                <input type="text" name="cod_disciplina" id="cod_disciplina" required>
+                <label for="periodo">Período da disciplina:</label>
+                <input type="text" name="periodo" id="periodo" required>      
+                <label for="desc_turma">Descrição da turma:</label>
+                <input type="text" name="desc_turma" id="desc_turma" size="50" required>                          
+                <button type ="submit" value="criar" id="btn-criar_turma">CRIAR TURMA</button>                
+            </section>
+        </form>        
+    </div>
+    {% endif %}
+</head>
+<body>
+    
+</body>
+</html>

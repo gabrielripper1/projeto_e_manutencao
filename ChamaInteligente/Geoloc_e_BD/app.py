@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, Response
+from flask import Flask, render_template, request, Response, session
 import sqlite3
 import json
 import psycopg2
@@ -6,8 +6,10 @@ import os
 from flask_cors import CORS
 
 app = Flask(__name__)
-
+app.secret_key = 'chave_secreta'
 CORS(app)
+
+tipo_dict = {'aluno': 1, 'professor': 2}
 
 def conexao():
     conn = psycopg2.connect(
@@ -33,26 +35,46 @@ def matricula_exists(tipo, matricula, conn, cur):
 def index():
     return render_template("login.html")
 
-@app.route("/login", methods=["POST"])
+@app.route("/login", methods=["GET", "POST"])
 def login():
     nome = request.form.get('nome')
     senha = request.form.get('senha')
+    tipo = request.form.get('tipo')
     conn = conexao()
-    cur = conn.cursor()
-    query = "SELECT nome, senha FROM aluno WHERE nome = %s;"
-    cur.execute(query, [nome])
-    dados = cur.fetchall()
+    cur = conn.cursor()    
+    if tipo_dict[tipo] == 1:
+        query = "SELECT nome, senha, id_aluno FROM aluno WHERE nome = %s;"    
+        cur.execute(query, [nome])
+        dados = cur.fetchall()
+        if dados[0][1] == senha:
+            x = False
+            session["id_usuario"] = dados[0][2]
+            conn.commit()
+            cur.close()
+            conn.close()            
+            return render_template("tela_aluno.html")
+        else:
+            x = True
+            return render_template("login.html", flag=x)
 
-    if dados[0][1] == senha:
-        x = False
-    else:
-        x = True
+    elif tipo_dict[tipo] == 2:
+        query = "SELECT nome, senha, id_professor FROM professor WHERE nome = %s;"    
+        cur.execute(query, [nome])
+        dados = cur.fetchall()
+        if dados[0][1] == senha:
+            x = False
+            session["id_usuario"] = dados[0][2]
+            conn.commit()
+            cur.close()
+            conn.close()
+            return render_template("tela_professor.html")
+        else:
+            x = True
+            return render_template("login.html", flag=x)
+      
     
-    print(x)
-    conn.commit()
-    cur.close()
-    conn.close()
-    return render_template("login.html", flag=x)
+    
+    
 
 @app.route("/move_cadastro", methods=["POST","GET"])
 def move_cadastro():
@@ -66,8 +88,7 @@ def move_latlong():
 def cadastro():
     nome = request.form.get('nome')
     senha = request.form.get('senha')
-    matricula = request.form.get('matricula')
-    print(matricula)
+    matricula = request.form.get('matricula')    
     tipo = request.form.get('tipo')
     conn = conexao()    
     cur = conn.cursor()
@@ -101,11 +122,31 @@ def post():
 
     lat = json_req["latitude"]
     long = json_req["longitude"]
-    id = json_req["id"]
-    print(json_req)
+    id = json_req["id"]    
     conn = conexao()
     cur = conn.cursor()
     cur.execute("INSERT into geolocs (idUsuario, lat, long) VALUES(?,?,?)", (id, lat, long))
     conn.commit()
 
     return json.dumps({'success':True}), 200, {'ContentType':'application/json'}
+
+@app.route("/gera_form_cria_turma", methods=["POST", "GET"])
+def gera_form_cria_turma():    
+    return render_template("tela_professor.html", flag_form=True)
+
+@app.route("/cria_turma", methods=["POST", "GET"])
+def cria_turma():
+    cod_disciplina = request.form.get('cod_disciplina')
+    periodo = request.form.get('periodo')
+    desc_turma = request.form.get('desc_turma')
+    id_professor = session.get("id_usuario")   
+
+    conn = conexao()    
+    cur = conn.cursor()
+
+    cur.execute("INSERT into turma (desc_turma, cod_disciplina, periodo, id_professor) VALUES(%s,%s,%s,%s)", (desc_turma, cod_disciplina, periodo, int(id_professor)))
+
+    conn.commit()
+    cur.close()
+    conn.close()
+    return render_template("tela_professor.html", flag_form=False)
