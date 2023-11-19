@@ -49,6 +49,10 @@ def login():
         if dados[0][1] == senha:
             x = False
             session["id_usuario"] = dados[0][2]
+            query = "SELECT desc_turma, periodo FROM turma WHERE id_aluno = %s;"
+            cur.execute(query, [session.get("id_usuario")])
+            dados_turma = cur.fetchall()
+            session['dados_turmas'] = dados_turmas           
             conn.commit()
             cur.close()
             conn.close()            
@@ -64,6 +68,10 @@ def login():
         if dados[0][1] == senha:
             x = False
             session["id_usuario"] = dados[0][2]
+            query = "SELECT desc_turma, periodo FROM turma WHERE id_professor = %s;"
+            cur.execute(query, [session.get("id_usuario")])
+            dados_turmas = cur.fetchall()
+            session['dados_turmas'] = dados_turmas      
             conn.commit()
             cur.close()
             conn.close()
@@ -145,6 +153,11 @@ def cria_turma():
     cur = conn.cursor()
 
     cur.execute("INSERT into turma (desc_turma, cod_disciplina, periodo, id_professor) VALUES(%s,%s,%s,%s)", (desc_turma, cod_disciplina, periodo, int(id_professor)))
+
+    query = "SELECT desc_turma, periodo FROM turma WHERE id_professor = %s;"
+    cur.execute(query, [session.get("id_usuario")])
+    dados_turmas = cur.fetchall()
+    session['dados_turmas'] = dados_turmas
 
     conn.commit()
     cur.close()

@@ -1,6 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <style>
+        table, th, td {
+            border: 1px solid black;
+            border-collapse: collapse;
+        }   
+    </style>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tela Professor</title>
@@ -19,7 +25,24 @@
             </section>
         </form>        
     </div>
+    <br>
     {% endif %}
+    <div>        
+        <table>
+            <tr>
+                <th>Descricao Turma</th>
+                <th>Periodo</th>                
+            </tr>
+            {% for turma in session.get("dados_turmas")  %}
+            <tr>
+                <td>{{turma[0]}}</td>
+                <td>{{turma[1]}}</td>                
+            </tr><a href="turma_redirect">Ir para turma</a>
+            {% endfor %}
+        </table> 
+    </div>
+
+
 </head>
 <body>
     
