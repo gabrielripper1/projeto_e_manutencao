@@ -1,0 +1,96 @@
+body {
+    padding: 0;
+    background-color: #e9f1ff;
+    height:100%;
+    width: 100%;
+}
+a {
+    color: white;
+    text-decoration: none;
+}
+
+
+nav {
+    background-color: #48439f;
+    padding-left: 20px;
+}
+.navbar-brand {
+    font-weight: bolder;
+}
+ul.navbar-nav > li:nth-child(1) > a {
+    font-weight: 700;
+}
+.nav-link {
+    font-weight: 500;
+    color: white!important;
+}
+
+.container-geral {
+    max-width: 1300px;
+    background-color: white;
+    padding: 20px;
+    border-radius: 10px;
+    margin-top: 90px;height: 500PX;
+    border-top: 8px solid #ffa835;
+}
+.presentation-text {
+    text-align:center;
+    color: #bb6b00;
+    margin-bottom: 35px;
+}
+.presentation-text.one-job {
+    margin-bottom: 110px;
+    color: #48439f;
+}
+
+footer {
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    color: rgb(148, 148, 148);
+    text-align: center;
+    font-style: italic;
+}
+
+.btn-primary,
+.btn-primary:focus,
+.btn-primary:hover,
+.btn-primary:active  {
+    background-color: #48439f;
+    border-color: #48439f;
+}
+
+.btn-agree,
+.btn-agree:focus,
+.btn-agree:hover,
+.btn-agree:active {
+    background-color: #339574;
+    border-color: #339574;
+}
+
+.btn-check:focus+.btn-primary, 
+.btn-primary:focus, 
+.btn-check:focus+.btn, 
+.btn:focus,
+.btn:active:focus,
+button:focus,
+button.focus {
+    box-shadow: none;
+}
+.btn:active,
+.btn.active,
+.btn-primary:active,
+button:active,
+button.active {
+    filter: grayscale(60%)!important;
+}
+.btn-check:hover+.btn-primary, 
+.btn-primary:hover, 
+.btn-check:hover+.btn, 
+.btn:hover,
+.btn:active:hover,
+button:hover,
+button.hover {
+    filter: grayscale(35%)!important;
+}

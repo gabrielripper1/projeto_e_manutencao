@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, Response, session
+from flask import Flask, render_template, send_from_directory, request, Response, session
 import sqlite3
 import json
 import psycopg2
@@ -10,6 +10,15 @@ app = Flask(__name__)
 app.secret_key = 'chave_secreta'
 CORS(app)
 
+"""
+..######...#######..##....##.########.##.....##....###.....#######.
+.##....##.##.....##.###...##.##........##...##....##.##...##.....##
+.##.......##.....##.####..##.##.........##.##....##...##..##.....##
+.##.......##.....##.##.##.##.######......###....##.....##.##.....##
+.##.......##.....##.##..####.##.........##.##...#########.##.....##
+.##....##.##.....##.##...###.##........##...##..##.....##.##.....##
+..######...#######..##....##.########.##.....##.##.....##..#######.
+"""
 tipo_dict = {'aluno': 1, 'professor': 2}
 
 def conexao():
@@ -21,6 +30,19 @@ def conexao():
         password='AVNS_ve5zp3SIE-Dy_p5nEfh'      
     )
     return conn
+
+
+
+
+"""
+....###.....######..########..######...######...#######.
+...##.##...##....##.##.......##....##.##....##.##.....##
+..##...##..##.......##.......##.......##.......##.....##
+.##.....##.##.......######....######...######..##.....##
+.#########.##.......##.............##.......##.##.....##
+.##.....##.##....##.##.......##....##.##....##.##.....##
+.##.....##..######..########..######...######...#######.
+"""
 
 def matricula_exists(tipo, matricula, conn, cur):
     query = "SELECT matricula FROM "+tipo+" WHERE matricula = %s;"
@@ -53,7 +75,7 @@ def login():
             query = "SELECT desc_turma, periodo FROM turma WHERE id_aluno = %s;"
             cur.execute(query, [session.get("id_usuario")])
             dados_turmas = cur.fetchall()
-            session['dados'] = dados_turmas           
+            session['dados'] = dados_turmas
             conn.commit()
             cur.close()
             conn.close()            
@@ -85,6 +107,7 @@ def login():
     
     
 
+
 @app.route("/move_cadastro", methods=["POST","GET"])
 def move_cadastro():
     return render_template("cadastro.html")
@@ -101,7 +124,7 @@ def cadastro():
     tipo = request.form.get('tipo')
     conn = conexao()    
     cur = conn.cursor()
-    check_matricula = matricula_exists(tipo, matricula, conn, cur)    
+    check_matricula = matricula_exists(tipo, matricula, conn, cur)
     if check_matricula:
         flag = check_matricula      
     else:
@@ -113,9 +136,41 @@ def cadastro():
     conn.commit()
     cur.close()
     conn.close()
-
     return render_template('cadastro.html', flag=flag)
 
+
+
+
+"""
+.########..######..########.####.##........#######...######.
+.##.......##....##....##.....##..##.......##.....##.##....##
+.##.......##..........##.....##..##.......##.....##.##......
+.######....######.....##.....##..##.......##.....##..######.
+.##.............##....##.....##..##.......##.....##.......##
+.##.......##....##....##.....##..##.......##.....##.##....##
+.########..######.....##....####.########..#######...######.
+"""
+
+@app.route("/use_login", methods=["GET"])
+def use_login():
+    return send_from_directory("templates", "styles/login.css")
+@app.route("/use_basic_style", methods=["GET"])
+def use_basic_style():
+    return send_from_directory("templates", "styles/style.css")
+
+
+
+
+
+"""
+..######...########..#######..##........#######...######...######.
+.##....##..##.......##.....##.##.......##.....##.##....##.##....##
+.##........##.......##.....##.##.......##.....##.##.......##......
+.##...####.######...##.....##.##.......##.....##.##........######.
+.##....##..##.......##.....##.##.......##.....##.##.............##
+.##....##..##.......##.....##.##.......##.....##.##....##.##....##
+..######...########..#######..########..#######...######...######.
+"""
 @app.route("/geolocs")
 def geo_locs():
     conn = conexao()
@@ -183,7 +238,7 @@ def show_aula(idAula):
     conn = conexao()    
     cur = conn.cursor()
     query = "SELECT id_aula, dthr_ini_aula, dthr_fim_aula  FROM aula WHERE id_turma = %s;"
-    cur.execute(query, [idTurma])
+    cur.execute(query, [idAula])
     aulas_turma = cur.fetchall()  
 
     return render_template("aula.html")

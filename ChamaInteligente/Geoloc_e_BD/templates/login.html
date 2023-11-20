@@ -2,32 +2,71 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Chamada Inteligente</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link rel="stylesheet" href="use_basic_style">
+    <link rel="stylesheet" href="use_login">
 </head>
+
 <body>
-    <h1>Login</h1>
-    {% if flag:%}
-        <h1>senha errada</h1>
-    {% endif %}
-    <div id="container-login">
+    <div class="container container-geral login-box">
+		<h1 class="presentation-text login-text">Olá, Aluno! Poderia se identificar?</h1>
+        {% if flag:%}
+            <h1>senha errada</h1>
+        {% endif %}
         <form action="/login" method="post">
-            <section id="login">
-                <label for="nome">Usuario</label>
-                <input type="text" name="nome" id="nome" required>
-                <label for="Senha">Senha</label>
-                <input type="password" name="senha" id="senha" required>
+            <div class="form-outline col-4">
+                <input class="form-control" id="nome" name="nome" type="text" placeholder="Nome de Usuario" required />
+            </div>
+            <br>
+            <div class="form-outline col-4">
+                <input class="form-control" id="senha" name="senha" type="password" placeholder="Senha" required />
+            </div>
+            <div class="form-outline col-4">
                 <label for="tipo">O que você é?</label>
                 <select name="tipo" id="tipo">
                     <option value="professor">Professor</option>
                     <option value="aluno">Aluno</option>
                 </select>
-                <button type ="submit" value="entrar" id="btn-entrar">ENTRAR</button>                
-            </section>
-        </form>        
-    </div>
-    <br><br>
-    <a href="move_cadastro">Cadastro</a>
-    <a href="move_latlong">Get Latlong</a>
+            </div>
+
+            <div class="login-utils" style="margin-top: 15px;">
+                <div>
+                    <input class="form-check-input" type="checkbox" value="" id="form2Example31" checked />
+                    <label class="form-check-label" for="form2Example31"> Lembre-me </label>
+                </div>
+                <a href="#!" style="color: blue;">Esqueceu a Senha?</a>
+                <a href="move_cadastro">Cadastro</a>
+            </div>
+
+            <!-- Submit button -->
+		    <div class="row form-functions">
+		    	<div class="col-md-6">
+		    		<a href="index.html">
+		    			<button type="button" class="btn btn-primary btn-block mb-4 ">Voltar</button>
+		    		</a>
+		    	</div>
+		    	<div class="col-md-6">
+		    		<a href="aluno.html">
+		    			<button class="btn btn-primary btn-block mb-4 btn-agree" type ="submit" value="entrar" id="btn-entrar">Entrar</button>
+		    		</a>
+		    	</div>
+		    </div>
+	    </form>
+	</div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+		integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+		crossorigin="anonymous"></script>
 </body>
+<footer>
+	<h6>Gerência de Projeto © Grupo 2</h6>
+	<p>10/2023 - Sistemas de Informações - UFF</p>
+</footer>
+
 </html>
