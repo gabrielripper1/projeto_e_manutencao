@@ -92,7 +92,7 @@ def login():
         if dados[0][1] == senha:
             x = False
             session["id_usuario"] = dados[0][2]
-            query = "SELECT desc_turma, periodo, id_turma FROM turma WHERE id_professor = %s;"
+            query = "SELECT cod_disciplina, desc_turma, periodo, id_turma FROM turma WHERE id_professor = %s;"
             cur.execute(query, [session.get("id_usuario")])
             dados_turmas = cur.fetchall()
             session['dados'] = dados_turmas            
@@ -242,7 +242,7 @@ def show_turma(idTurma):
     print(aulas_turma)
     print(type(aulas_turma))
 
-    return render_template("aula.html", aulas_turma=aulas_turma)
+    return render_template("aula_2.html", aulas_turma=aulas_turma)
 
 
 
@@ -261,8 +261,18 @@ def show_aula(idAula):
 
     conn = conexao()
     cur = conn.cursor()
-    query = "SELECT id_aula, dthr_ini_aula, dthr_fim_aula  FROM aula WHERE id_turma = %s;"
+    #query = "SELECT id_aula, dthr_ini_aula, dthr_fim_aula  FROM aula WHERE id_turma = %s;"
+    query = {
+    """
+    SELECT desc_turma, aula.id_aula, dthr_ini_aula, dthr_fim_aula, presenca.descricao 
+    FROM aula  
+    INNER JOIN turma ON aula.id_turma = turma.id_turma 
+    INNER JOIN aluno_aula ON aula.id_aula = aluno_aula.id_aula 
+    INNER JOIN presenca ON aluno_aula.id_presenca_aluno_aula = presenca.id_presenca 
+    WHERE turma.id_turma = %s AND aluno_aula.id_aluno = %s;
+    """
+    }
     cur.execute(query, [idAula])
     aulas_turma = cur.fetchall()
 
-    return render_template("aula.html")
+    return render_template("aula_2.html")

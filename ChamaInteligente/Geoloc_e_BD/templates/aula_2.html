@@ -2,60 +2,6 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Turma</title>
-    <style>
-        table, th, td {
-            border: 1px solid black;
-            border-collapse: collapse;
-        }   
-    </style>   
-</head>
-<body>
-    <div>        
-        <table>
-            <tr>                
-                <th>Data</th>                               
-            </tr>
-            
-            {% for aula in aulas_turma %}
-            <tr>                
-                <td>{{aula[1]}}</td>                
-                <td><a class="btn btn-danger" type="button" href="/show_aula/{{aula[0]}}">Ir para aula</a></td>                                                 
-            </tr> 
-            {% endfor %}
-        </table> 
-    </div>
-</body>
-</html>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Chamada Inteligente</title>
@@ -64,6 +10,10 @@
         integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <link rel="stylesheet" href="use_basic_style">
 </head>
+
+
+
+
 
 <body>
     <nav class="navbar navbar-expand-lg navbar-dark">
@@ -108,58 +58,25 @@
 
 
 	<div class="container container-geral">
-		<h1 class="presentation-text">Suas Turmas</h1>
-
-
-
-
-
-
-        <a href="gera_form_cria_turma">Cria turma</a>
-        {% if flag_form:%}
-        <div id="container-cria_turma">
-            <form action="/cria_turma" method="post">
-                <section id="cria_turma">
-                    <label for="cod_disciplina">Código da disciplina:</label>
-                    <input type="text" name="cod_disciplina" id="cod_disciplina" required>
-                    <label for="periodo">Período da disciplina:</label>
-                    <input type="text" name="periodo" id="periodo" required>
-                    <label for="desc_turma">Descrição da turma:</label>
-                    <input type="text" name="desc_turma" id="desc_turma" size="50" required>
-                    <button type ="submit" value="criar" id="btn-criar_turma">CRIAR TURMA</button>
-                </section>
-            </form>
-        </div>
-        <br>
-        {% endif %}
-
-
-
-
-
-
-
+		<h1 class="presentation-text">Todas as Aulas da Disciplina de asfgasfasfasfasf</h1>
 
 
 		<table class="table">
 			<thead>
 				<tr>
-					<th scope="col">Cód. Disciplina</th>
-					<th scope="col">Descricao Turma</th>
-					<th scope="col">Período</th>
+					<th scope="col">Início da aula</th>
+					<th scope="col">Presença</th>
 					<th scope="col">Opções</th>
 				</tr>
 			</thead>
 			<tbody>
-                {% for turma in session.get("dados") %}
+                {% for aula in aulas_turma %}
 				<tr>
-					<th scope="row">{{turma[0]}}</th>
-					<td>{{turma[1]}}</td>
-					<td>{{turma[2]}}</td>
+					<th scope="row">{{aulas_turma[2]}}</th>
+					<td>{{aulas_turma[4]}}</td>
 					<td>
-                        <a class="btn btn-danger" type="button" href="/show_turma/{{turma[2]}}">Ir para aulas</a>
 						<button type="button" class="btn btn-primary btn-agree" data-bs-toggle="modal" data-bs-target="#myModal"> Presença </button>
-						<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#myModal"> Relatórios de Chamada</button>
+						<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#myModal"> Relatórios de Presenças</button>
 						<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#myModal"> Solicitar Abono de Falta </button>
 					</td>
 				</tr>
