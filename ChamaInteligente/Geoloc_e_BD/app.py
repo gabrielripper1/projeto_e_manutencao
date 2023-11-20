@@ -3,6 +3,7 @@ import sqlite3
 import json
 import psycopg2
 import os
+import datetime
 from flask_cors import CORS
 
 app = Flask(__name__)
@@ -73,7 +74,7 @@ def login():
             session["id_usuario"] = dados[0][2]
             query = "SELECT desc_turma, periodo FROM turma WHERE id_aluno = %s;"
             cur.execute(query, [session.get("id_usuario")])
-            dados_turma = cur.fetchall()
+            dados_turmas = cur.fetchall()
             session['dados_turmas'] = dados_turmas           
             conn.commit()
             cur.close()
@@ -90,10 +91,10 @@ def login():
         if dados[0][1] == senha:
             x = False
             session["id_usuario"] = dados[0][2]
-            query = "SELECT desc_turma, periodo FROM turma WHERE id_professor = %s;"
+            query = "SELECT desc_turma, periodo, id_turma FROM turma WHERE id_professor = %s;"
             cur.execute(query, [session.get("id_usuario")])
             dados_turmas = cur.fetchall()
-            session['dados_turmas'] = dados_turmas      
+            session['dados_turmas'] = dados_turmas            
             conn.commit()
             cur.close()
             conn.close()
@@ -209,12 +210,35 @@ def cria_turma():
 
     cur.execute("INSERT into turma (desc_turma, cod_disciplina, periodo, id_professor) VALUES(%s,%s,%s,%s)", (desc_turma, cod_disciplina, periodo, int(id_professor)))
 
-    query = "SELECT desc_turma, periodo FROM turma WHERE id_professor = %s;"
+    query = "SELECT desc_turma, periodo, id_turma FROM turma WHERE id_professor = %s;"
     cur.execute(query, [session.get("id_usuario")])
     dados_turmas = cur.fetchall()
-    session['dados_turmas'] = dados_turmas
-
+    session['dados'] = dados_turmas
     conn.commit()
     cur.close()
     conn.close()
     return render_template("tela_professor.html", flag_form=False)
+
+@app.route("/show_turma/<idTurma>", methods=["POST", "GET"])
+def show_turma(idTurma):
+
+    conn = conexao()    
+    cur = conn.cursor()
+    query = "SELECT id_aula, dthr_ini_aula, dthr_fim_aula  FROM aula WHERE id_turma = %s;"
+    cur.execute(query, [idTurma])
+    aulas_turma = cur.fetchall()    
+    print(aulas_turma)
+    print(type(aulas_turma))
+
+    return render_template("turma.html", aulas_turma=aulas_turma)
+
+@app.route("/show_aula/<idAula>", methods=["POST","GET"])
+def show_aula(idAula):
+
+    conn = conexao()    
+    cur = conn.cursor()
+    query = "SELECT id_aula, dthr_ini_aula, dthr_fim_aula  FROM aula WHERE id_turma = %s;"
+    cur.execute(query, [idTurma])
+    aulas_turma = cur.fetchall()  
+
+    return render_template("aula.html")

@@ -33,11 +33,12 @@
                 <th>Descricao Turma</th>
                 <th>Periodo</th>                
             </tr>
-            {% for turma in session.get("dados_turmas")  %}
+            {% for turma in session.get("dados")  %}
             <tr>
                 <td>{{turma[0]}}</td>
-                <td>{{turma[1]}}</td>                
-            </tr><a href="turma_redirect">Ir para turma</a>
+                <td>{{turma[1]}}</td>
+                <td><a class="btn btn-danger" type="button" href="/show_turma/{{turma[2]}}">Ir para turma</a></td>                                                 
+            </tr> 
             {% endfor %}
         </table> 
     </div>
