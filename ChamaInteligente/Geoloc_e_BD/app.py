@@ -64,7 +64,8 @@ def login():
     senha = request.form.get('senha')
     tipo = request.form.get('tipo')
     conn = conexao()
-    cur = conn.cursor()    
+    cur = conn.cursor()
+    
     if tipo_dict[tipo] == 1:
         query = "SELECT nome, senha, id_aluno FROM aluno WHERE nome = %s;"    
         cur.execute(query, [nome])
@@ -72,14 +73,14 @@ def login():
         if dados[0][1] == senha:
             x = False
             session["id_usuario"] = dados[0][2]
-            query = "SELECT desc_turma, periodo FROM turma WHERE id_aluno = %s;"
+            query = "SELECT cod_disciplina, desc_turma, periodo FROM aluno_turma INNER JOIN turma ON aluno_turma.id_turma = turma.id_turma WHERE id_aluno = %s;"
             cur.execute(query, [session.get("id_usuario")])
             dados_turmas = cur.fetchall()
             session['dados'] = dados_turmas
             conn.commit()
             cur.close()
             conn.close()            
-            return render_template("tela_aluno.html")
+            return render_template("turma.html")
         else:
             x = True
             return render_template("login.html", flag=x)
@@ -98,7 +99,7 @@ def login():
             conn.commit()
             cur.close()
             conn.close()
-            return render_template("tela_professor.html")
+            return render_template("turma.html")
         else:
             x = True
             return render_template("login.html", flag=x)
@@ -194,9 +195,20 @@ def post():
 
     return json.dumps({'success':True}), 200, {'ContentType':'application/json'}
 
+
+"""
+.########.##.....##.########..##.....##....###...
+....##....##.....##.##.....##.###...###...##.##..
+....##....##.....##.##.....##.####.####..##...##.
+....##....##.....##.########..##.###.##.##.....##
+....##....##.....##.##...##...##.....##.#########
+....##....##.....##.##....##..##.....##.##.....##
+....##.....#######..##.....##.##.....##.##.....##
+"""
+
 @app.route("/gera_form_cria_turma", methods=["POST", "GET"])
 def gera_form_cria_turma():    
-    return render_template("tela_professor.html", flag_form=True)
+    return render_template("turma.html", flag_form=True)
 
 @app.route("/cria_turma", methods=["POST", "GET"])
 def cria_turma():
@@ -217,28 +229,40 @@ def cria_turma():
     conn.commit()
     cur.close()
     conn.close()
-    return render_template("tela_professor.html", flag_form=False)
+    return render_template("turma.html", flag_form=False)
 
 @app.route("/show_turma/<idTurma>", methods=["POST", "GET"])
 def show_turma(idTurma):
 
-    conn = conexao()    
+    conn = conexao()
     cur = conn.cursor()
     query = "SELECT id_aula, dthr_ini_aula, dthr_fim_aula  FROM aula WHERE id_turma = %s;"
     cur.execute(query, [idTurma])
-    aulas_turma = cur.fetchall()    
+    aulas_turma = cur.fetchall()
     print(aulas_turma)
     print(type(aulas_turma))
 
-    return render_template("turma.html", aulas_turma=aulas_turma)
+    return render_template("aula.html", aulas_turma=aulas_turma)
+
+
+
+"""
+....###....##.....##.##..........###...
+...##.##...##.....##.##.........##.##..
+..##...##..##.....##.##........##...##.
+.##.....##.##.....##.##.......##.....##
+.#########.##.....##.##.......#########
+.##.....##.##.....##.##.......##.....##
+.##.....##..#######..########.##.....##
+"""
 
 @app.route("/show_aula/<idAula>", methods=["POST","GET"])
 def show_aula(idAula):
 
-    conn = conexao()    
+    conn = conexao()
     cur = conn.cursor()
     query = "SELECT id_aula, dthr_ini_aula, dthr_fim_aula  FROM aula WHERE id_turma = %s;"
-    cur.execute(query, [idTurma])
-    aulas_turma = cur.fetchall()  
+    cur.execute(query, [idAula])
+    aulas_turma = cur.fetchall()
 
     return render_template("aula.html")
