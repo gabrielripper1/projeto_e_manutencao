@@ -20,6 +20,7 @@ CORS(app)
 ..######...#######..##....##.########.##.....##.##.....##..#######.
 """
 tipo_dict = {'aluno': 1, 'professor': 2}
+presenca_dict = {'ausente': 0, 'presente': 1, 'abono':2}
 
 def conexao():
     conn = psycopg2.connect(
@@ -226,10 +227,10 @@ def show_turma(idTurma):
     cur = conn.cursor()
     query = "SELECT id_aula, dthr_ini_aula, dthr_fim_aula  FROM aula WHERE id_turma = %s;"
     cur.execute(query, [idTurma])
-    aulas_turma = cur.fetchall()    
-    print(aulas_turma)
-    print(type(aulas_turma))
-
+    aulas_turma = cur.fetchall()        
+    conn.commit()
+    cur.close()
+    conn.close()
     return render_template("turma.html", aulas_turma=aulas_turma)
 
 @app.route("/show_aula/<idAula>", methods=["POST","GET"])
@@ -237,8 +238,32 @@ def show_aula(idAula):
 
     conn = conexao()    
     cur = conn.cursor()
-    query = "SELECT id_aula, dthr_ini_aula, dthr_fim_aula  FROM aula WHERE id_turma = %s;"
+    query = "SELECT aluno.nome, aluno.id_aluno, aluno_aula.id_presenca_aluno_aula  FROM aluno INNER JOIN aluno_aula ON aluno.id_aluno = aluno_aula.id_aluno WHERE aluno_aula.id_aula = %s;"
     cur.execute(query, [idAula])
-    aulas_turma = cur.fetchall()  
+    alunos_aula = cur.fetchall()
+    session['dados'] = alunos_aula
+    session['idAula'] = idAula
+    conn.commit()
+    cur.close()
+    conn.close()   
+    return render_template("aula.html")
+
+@app.route("/muda_presenca", methods=["GET", "POST"])
+def muda_presenca():
+    presenca = request.form.get('presenca')
+    idAluno = request.form.get('idAluno')
+    idAula = session.get("idAula")
+    
+    conn = conexao()    
+    cur = conn.cursor()      
+    query = "UPDATE public.aluno_aula SET id_presenca_aluno_aula = %s WHERE id_aluno = %s;"
+    cur.execute(query, [presenca_dict[presenca], idAluno])
+    query = "SELECT aluno.nome, aluno.id_aluno, aluno_aula.id_presenca_aluno_aula  FROM aluno INNER JOIN aluno_aula ON aluno.id_aluno = aluno_aula.id_aluno WHERE aluno_aula.id_aula = %s;"
+    cur.execute(query, [idAula])
+    alunos_aula = cur.fetchall()
+    session['dados'] = alunos_aula
+    conn.commit()
+    cur.close()
+    conn.close() 
 
     return render_template("aula.html")
