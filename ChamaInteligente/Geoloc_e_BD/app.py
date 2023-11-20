@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, Response
+from flask import Flask, render_template, send_from_directory, request, Response
 import sqlite3
 import json
 import psycopg2
@@ -9,6 +9,16 @@ app = Flask(__name__)
 
 CORS(app)
 
+"""
+..######...#######..##....##.########.##.....##....###.....#######.
+.##....##.##.....##.###...##.##........##...##....##.##...##.....##
+.##.......##.....##.####..##.##.........##.##....##...##..##.....##
+.##.......##.....##.##.##.##.######......###....##.....##.##.....##
+.##.......##.....##.##..####.##.........##.##...#########.##.....##
+.##....##.##.....##.##...###.##........##...##..##.....##.##.....##
+..######...#######..##....##.########.##.....##.##.....##..#######.
+"""
+
 def conexao():
     conn = psycopg2.connect(
         host="db-postgresql-nyc3-48541-do-user-15044691-0.c.db.ondigitalocean.com",
@@ -18,6 +28,19 @@ def conexao():
         password='AVNS_ve5zp3SIE-Dy_p5nEfh'      
     )
     return conn
+
+
+
+
+"""
+....###.....######..########..######...######...#######.
+...##.##...##....##.##.......##....##.##....##.##.....##
+..##...##..##.......##.......##.......##.......##.....##
+.##.....##.##.......######....######...######..##.....##
+.#########.##.......##.............##.......##.##.....##
+.##.....##.##....##.##.......##....##.##....##.##.....##
+.##.....##..######..########..######...######...#######.
+"""
 
 def matricula_exists(tipo, matricula, conn, cur):
     query = "SELECT matricula FROM "+tipo+" WHERE matricula = %s;"
@@ -52,6 +75,7 @@ def login():
     conn.close()
     return render_template("login.html", flag=x)
 
+
 @app.route("/move_cadastro", methods=["POST","GET"])
 def move_cadastro():
     return render_template("cadastro.html")
@@ -65,7 +89,7 @@ def cadastro():
     tipo = request.form.get('tipo')
     conn = conexao()    
     cur = conn.cursor()
-    check_matricula = matricula_exists(tipo, matricula, conn, cur)    
+    check_matricula = matricula_exists(tipo, matricula, conn, cur)
     if check_matricula:
         flag = check_matricula      
     else:
@@ -77,9 +101,41 @@ def cadastro():
     conn.commit()
     cur.close()
     conn.close()
-
     return render_template('cadastro.html', flag=flag)
 
+
+
+
+"""
+.########..######..########.####.##........#######...######.
+.##.......##....##....##.....##..##.......##.....##.##....##
+.##.......##..........##.....##..##.......##.....##.##......
+.######....######.....##.....##..##.......##.....##..######.
+.##.............##....##.....##..##.......##.....##.......##
+.##.......##....##....##.....##..##.......##.....##.##....##
+.########..######.....##....####.########..#######...######.
+"""
+
+@app.route("/use_login", methods=["GET"])
+def use_login():
+    return send_from_directory("templates", "styles/login.css")
+@app.route("/use_basic_style", methods=["GET"])
+def use_basic_style():
+    return send_from_directory("templates", "styles/style.css")
+
+
+
+
+
+"""
+..######...########..#######..##........#######...######...######.
+.##....##..##.......##.....##.##.......##.....##.##....##.##....##
+.##........##.......##.....##.##.......##.....##.##.......##......
+.##...####.######...##.....##.##.......##.....##.##........######.
+.##....##..##.......##.....##.##.......##.....##.##.............##
+.##....##..##.......##.....##.##.......##.....##.##....##.##....##
+..######...########..#######..########..#######...######...######.
+"""
 @app.route("/geolocs")
 def geo_locs():
     conn = conexao()
@@ -103,3 +159,5 @@ def post():
     conn.commit()
 
     return json.dumps({'success':True}), 200, {'ContentType':'application/json'}
+
+
