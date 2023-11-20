@@ -53,7 +53,7 @@ def login():
             query = "SELECT desc_turma, periodo FROM turma WHERE id_aluno = %s;"
             cur.execute(query, [session.get("id_usuario")])
             dados_turmas = cur.fetchall()
-            session['dados_turmas'] = dados_turmas           
+            session['dados'] = dados_turmas           
             conn.commit()
             cur.close()
             conn.close()            
@@ -72,7 +72,7 @@ def login():
             query = "SELECT desc_turma, periodo, id_turma FROM turma WHERE id_professor = %s;"
             cur.execute(query, [session.get("id_usuario")])
             dados_turmas = cur.fetchall()
-            session['dados_turmas'] = dados_turmas            
+            session['dados'] = dados_turmas            
             conn.commit()
             cur.close()
             conn.close()
