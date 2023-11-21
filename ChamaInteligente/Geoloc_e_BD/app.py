@@ -263,18 +263,14 @@ def show_aula(idTurma):
 
     conn = conexao()
     cur = conn.cursor()
-    query = {
-    """
-    SELECT desc_turma, aula.id_aula, dthr_ini_aula, dthr_fim_aula, presenca.descricao 
-    FROM turma  
-    INNER JOIN turma ON aula.id_turma = turma.id_turma 
-    INNER JOIN aluno_aula ON aula.id_aula = aluno_aula.id_aula 
-    INNER JOIN presenca ON aluno_aula.id_presenca_aluno_aula = presenca.id_presenca 
-    WHERE turma.id_turma = %s;
-    """
-    }
+    query = "SELECT desc_turma, id_aula, dthr_ini_aula, dthr_fim_aula FROM aula   INNER JOIN turma ON turma.id_turma = aula.id_turma  WHERE turma.id_turma = %s;"
     cur.execute(query, [idTurma])
-    aulas_turma = cur.fetchall()
+    alunos_aula = cur.fetchall()
+    session['dados'] = alunos_aula
+    session['idTurma'] = idTurma
+    conn.commit()
+    cur.close()
+    conn.close()
     return render_template("aula.html")
 
 
