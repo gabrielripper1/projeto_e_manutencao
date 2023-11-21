@@ -260,11 +260,12 @@ def show_alunos(idAula):
 
     conn = conexao()
     cur = conn.cursor()
-    query = "SELECT aluno.nome, aluno.id_aluno, aluno_aula.id_presenca_aluno_aula  FROM aluno INNER JOIN aluno_aula ON aluno.id_aluno = aluno_aula.id_aluno WHERE aluno_aula.id_aula = %s;"
+    query = "SELECT aluno.nome, aluno.id_aluno, aluno_aula.id_presenca_aluno_aula, aula.dthr_fim_aula  FROM aluno INNER JOIN aluno_aula ON aluno.id_aluno = aluno_aula.id_aluno INNER JOIN aula ON aluno_aula.id_aula = aula.id_aula WHERE aluno_aula.id_aula = %s;"
     cur.execute(query, [idAula])
     alunos_aula = cur.fetchall()
     session['dados'] = alunos_aula
     session['idAula'] = idAula
+    
     conn.commit()
     cur.close()
     conn.close()   
