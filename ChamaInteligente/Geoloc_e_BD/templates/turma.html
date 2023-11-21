@@ -2,29 +2,137 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Turma</title>
-    <style>
-        table, th, td {
-            border: 1px solid black;
-            border-collapse: collapse;
-        }   
-    </style>   
+    <title>Chamada Inteligente</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
 </head>
+
 <body>
-    <div>        
-        <table>
-            <tr>                
-                <th>Data</th>                               
-            </tr>
-            
-            {% for aula in aulas_turma %}
-            <tr>                
-                <td>{{aula[1]}}</td>                
-                <td><a class="btn btn-danger" type="button" href="/show_aula/{{aula[0]}}">Ir para aula</a></td>                                                 
-            </tr> 
-            {% endfor %}=
-        </table> 
-    </div>
+    <nav class="navbar navbar-expand-lg navbar-dark">
+		<div class="container-fluid">
+			<a class="navbar-brand" href="index.html">HOME</a>
+			<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+				aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+				<span class="navbar-toggler-icon"></span>
+			</button>
+
+			<div class="collapse navbar-collapse" id="navbarSupportedContent">
+				<ul class="navbar-nav me-auto mb-2 mb-lg-0">
+					<li class="nav-item">
+						<a class="nav-link" href="iniciar-chamada.html">Iniciar Chamada</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" href="aluno.html">Aluno</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" href="prof.html">Professor</a>
+					</li>
+					<li class="nav-item dropdown">
+						<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+							data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="color: #ffffff73!important">
+							Opções
+						</a>
+						<div class="dropdown-menu" aria-labelledby="navbarDropdown">
+							<a class="dropdown-item" href="#">Gerenciar Turmas</a>
+							<a class="dropdown-item" href="#">Gerenciar Alunos</a>
+							<div class="dropdown-divider"></div>
+							<a class="dropdown-item" href="#">Gerenciar Professores</a>
+						</div>
+					</li>
+				</ul>
+				<a class="navbar-brand" href="login prof.html">Sair
+					<svg xmlns="http://www.w3.org/2000/svg" width="20" fill="Red" height="16" fill="currentColor"
+						class="bi bi-door-open-fill" viewBox="0 0 20 20"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" 	stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g id="layer1"> <path d="M 0 1 L 0 20 L 12 20 L 12 16 L 11 16 L 11 19 L 1 19 L 1 2 L 11 2 L 11 5 L 12 5 L 12 	1 L 0 1 z M 15 7 L 18 10 L 5 10 L 5 11 L 18 11 L 15 14 L 16.5 14 L 20 10.5 L 16.5 7 L 15 7 z " style="fill:#ffffff; fill-opacity:1; stroke:none; stroke-width:0px;"></	path></g></g></svg>
+				</a>
+			</div>
+		</div>
+	</nav>
+
+
+	<div class="container container-geral">
+		<h1 class="presentation-text">Suas Turmas</h1>
+
+
+
+
+
+
+        
+		<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#criar_turmas_modal"> Cria turma </button>
+
+
+
+
+
+
+
+
+		<table class="table">
+			<thead>
+				<tr>
+					<th scope="col">Cód. Disciplina</th>
+					<th scope="col">Descricao Turma</th>
+					<th scope="col">Período</th>
+					<th scope="col">Opções</th>
+				</tr>
+			</thead>
+			<tbody>
+                {% for turma in session.get("dados") %}
+				<tr>
+					<th scope="row">{{turma[0]}}</th>
+					<td>{{turma[1]}}</td>
+					<td>{{turma[2]}}</td>
+					<td>
+                        <a class="btn btn-danger" type="button" href="/show_aula/{{turma[3]}}">Ir para aulas</a>
+					</td>
+				</tr>
+                {% endfor %}
+			</tbody>
+		</table>
+
+		<!-- The Modal -->
+		<div class="modal fade" id="criar_turmas_modal" data-bs-backdrop="static" data-bs-keyboard="false">
+			<div class="modal-dialog modal-dialog-centered">
+				<div class="modal-content">
+
+					<!-- Modal Header -->
+					<div class="modal-header">
+						<h4 class="modal-title">Criar nova turma</h4>
+						<button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+					</div>
+
+					<!-- Modal body -->
+					<div class="modal-body">
+        				<div id="container-cria_turma">
+        				    <form action="/cria_turma" method="POST">
+        				        <div id="cria_turma">
+									<div class="form-outline col-4" style="display: inline;">
+										<label for="cod_disciplina">Código da disciplina:</label>
+										<input class="form-control" id="cod_disciplina" name="cod_disciplina" type="text" placeholder="Código da disciplina" required />
+									</div>
+									<div class="form-outline col-4" style="display: inline;">
+										<label for="desc_turma">Descrição da turma:</label>
+										<input class="form-control" id="desc_turma" name="desc_turma" 	type="text" placeholder="Descrição da turma" size="50" required />
+									</div>
+									<div class="form-outline col-4" style="display: inline;">
+										<label for="periodo">Período da disciplina:</label>
+										<input class="form-control" id="periodo" name="periodo" type="text" placeholder="Período da disciplina" required />
+									</div>
+									<button class="btn btn-primary btn-block mb-4 btn-agree" type ="submit" value="criar" id="btn-criar_turma">Criar Turma</button>
+        				        </div>
+        				    </form>
+        				</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+		integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+		crossorigin="anonymous"></script>
 </body>
 </html>
