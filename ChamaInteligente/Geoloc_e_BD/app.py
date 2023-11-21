@@ -284,21 +284,4 @@ def muda_presenca():
     cur.close()
     conn.close() 
 
-<<<<<<< HEAD
-    return render_template("aula.html")
-
-@app.route("/muda_fim_aula", methods=["GET", "POST"])
-def muda_fim_aula():
-    horario = request.form.get('horario')
-    horario_anterior = request.form.get('horario_anterior')    
-    horario_novo = horario_anterior + " " + horario + ":00.000"
-    
-    # conn = conexao()    
-    # cur = conn.cursor()      
-    # query = "UPDATE public.aluno_aula SET id_presenca_aluno_aula = %s WHERE id_aluno = %s;"
-    # cur.execute(query, [presenca_dict[presenca], idAluno])
-
-    return render_template("aula.html")
-=======
     return render_template("lista_alunos.html")
->>>>>>>>> Temporary merge branch 2
