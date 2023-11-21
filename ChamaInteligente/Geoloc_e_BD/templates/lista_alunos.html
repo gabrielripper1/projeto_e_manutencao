@@ -9,7 +9,47 @@
 	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
-    <div class="container container-geral">        
+    <nav class="navbar navbar-expand-lg navbar-dark">
+		<div class="container-fluid">
+			<a class="navbar-brand" href="index.html">HOME</a>
+			<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+				aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+				<span class="navbar-toggler-icon"></span>
+			</button>
+
+			<div class="collapse navbar-collapse" id="navbarSupportedContent">
+				<ul class="navbar-nav me-auto mb-2 mb-lg-0">
+					<li class="nav-item">
+						<a class="nav-link" href="iniciar-chamada.html">Iniciar Chamada</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" href="aluno.html">Aluno</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" href="prof.html">Professor</a>
+					</li>
+					<li class="nav-item dropdown">
+						<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+							data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="color: #ffffff73!important">
+							Opções
+						</a>
+						<div class="dropdown-menu" aria-labelledby="navbarDropdown">
+							<a class="dropdown-item" href="#">Gerenciar Turmas</a>
+							<a class="dropdown-item" href="#">Gerenciar Alunos</a>
+							<div class="dropdown-divider"></div>
+							<a class="dropdown-item" href="#">Gerenciar Professores</a>
+						</div>
+					</li>
+				</ul>
+				<a class="navbar-brand" href="login prof.html">Sair
+					<svg xmlns="http://www.w3.org/2000/svg" width="20" fill="Red" height="16" fill="currentColor"
+						class="bi bi-door-open-fill" viewBox="0 0 20 20"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" 	stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g id="layer1"> <path d="M 0 1 L 0 20 L 12 20 L 12 16 L 11 16 L 11 19 L 1 19 L 1 2 L 11 2 L 11 5 L 12 5 L 12 	1 L 0 1 z M 15 7 L 18 10 L 5 10 L 5 11 L 18 11 L 15 14 L 16.5 14 L 20 10.5 L 16.5 7 L 15 7 z " style="fill:#ffffff; fill-opacity:1; stroke:none; stroke-width:0px;"></	path></g></g></svg>
+				</a>
+			</div>
+		</div>
+	</nav>
+    <div class="container container-geral">   
+        <h2 class="presentation-text">Relatório de presença da Aula {{session.get("idAula") }}</h2>     
         <table class="table">
             <thead>
                 <tr>                

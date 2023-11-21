@@ -284,3 +284,6 @@ def muda_presenca():
     conn.close() 
 
     return render_template("lista_alunos.html")
+
+
+
