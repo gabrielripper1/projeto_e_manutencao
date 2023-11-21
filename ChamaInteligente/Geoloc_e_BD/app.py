@@ -6,7 +6,7 @@ import os
 import datetime
 from flask_cors import CORS
 
-app = Flask(__name__)
+app = Flask(__name__, static_folder='static')
 app.secret_key = 'chave_secreta'
 CORS(app)
 
@@ -19,7 +19,7 @@ CORS(app)
 .##....##.##.....##.##...###.##........##...##..##.....##.##.....##
 ..######...#######..##....##.########.##.....##.##.....##..#######.
 """
-tipo_dict = {'aluno': 1, 'professor': 2}
+TIPO_DICT = {'aluno': 1, 'professor': 2}
 presenca_dict = {'ausente': 0, 'presente': 1, 'abono':2}
 
 def conexao():
@@ -67,7 +67,7 @@ def login():
     conn = conexao()
     cur = conn.cursor()
     
-    if tipo_dict[tipo] == 1:
+    if TIPO_DICT[tipo] == 1:
         query = "SELECT nome, senha, id_aluno FROM aluno WHERE nome = %s;"    
         cur.execute(query, [nome])
         dados = cur.fetchall()
@@ -86,7 +86,7 @@ def login():
             x = True
             return render_template("login.html", flag=x)
 
-    elif tipo_dict[tipo] == 2:
+    elif TIPO_DICT[tipo] == 2:
         query = "SELECT nome, senha, id_professor FROM professor WHERE nome = %s;"    
         cur.execute(query, [nome])
         dados = cur.fetchall()
@@ -142,28 +142,6 @@ def cadastro():
 
 
 
-
-"""
-.########..######..########.####.##........#######...######.
-.##.......##....##....##.....##..##.......##.....##.##....##
-.##.......##..........##.....##..##.......##.....##.##......
-.######....######.....##.....##..##.......##.....##..######.
-.##.............##....##.....##..##.......##.....##.......##
-.##.......##....##....##.....##..##.......##.....##.##....##
-.########..######.....##....####.########..#######...######.
-"""
-
-@app.route("/use_login", methods=["GET"])
-def use_login():
-    return send_from_directory("templates", "styles/login.css")
-@app.route("/use_basic_style", methods=["GET"])
-def use_basic_style():
-    return send_from_directory("templates", "styles/style.css")
-
-
-
-
-
 """
 ..######...########..#######..##........#######...######...######.
 .##....##..##.......##.....##.##.......##.....##.##....##.##....##
@@ -207,9 +185,6 @@ def post():
 ....##.....#######..##.....##.##.....##.##.....##
 """
 
-@app.route("/gera_form_cria_turma", methods=["POST", "GET"])
-def gera_form_cria_turma():    
-    return render_template("turma.html", flag_form=True)
 
 @app.route("/cria_turma", methods=["POST", "GET"])
 def cria_turma():
@@ -261,9 +236,10 @@ def show_turma(idTurma):
 @app.route("/show_aula/<idTurma>", methods=["POST","GET"])
 def show_aula(idTurma):
 
+    print(idTurma)
     conn = conexao()
     cur = conn.cursor()
-    query = "SELECT desc_turma, id_aula, dthr_ini_aula, dthr_fim_aula FROM aula   INNER JOIN turma ON turma.id_turma = aula.id_turma  WHERE turma.id_turma = %s;"
+    query = "SELECT desc_turma, id_aula, dthr_ini_aula, dthr_fim_aula FROM aula INNER JOIN turma ON turma.id_turma = aula.id_turma WHERE turma.id_turma = %s;"
     cur.execute(query, [idTurma])
     alunos_aula = cur.fetchall()
     session['dados'] = alunos_aula
