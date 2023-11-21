@@ -247,6 +247,8 @@ def show_aula(idTurma):
     query = "SELECT desc_turma, id_aula, dthr_ini_aula, dthr_fim_aula FROM aula INNER JOIN turma ON turma.id_turma = aula.id_turma WHERE turma.id_turma = %s;"
     cur.execute(query, [idTurma])
     alunos_aula = cur.fetchall()
+    if len(alunos_aula) == 0:
+        alunos_aula = ['']    
     session['dados'] = alunos_aula
     session['TIPO_USER'] = TIPO_USER
     conn.commit()
@@ -290,3 +292,50 @@ def muda_presenca():
     conn.close() 
 
     return render_template("lista_alunos.html")
+
+@app.route("/move_cria_chamada/<idTurma>", methods=["GET", "POST"])
+def move_cria_chamada(idTurma):
+    conn = conexao()    
+    cur = conn.cursor()
+    query = "SELECT desc_turma FROM turma WHERE id_turma = %s;"
+    cur.execute(query, [idTurma])
+    desc_turma = cur.fetchall()[0][0]    
+    return render_template("iniciar_chamada.html", idTurma=idTurma, desc_turma=desc_turma)
+
+@app.route("/cria_chamada", methods=["GET", "POST"])
+def cria_chamada():
+    data_ini = request.form.get('data_ini')
+    hora_ini = request.form.get('hora_ini')
+    data_fim = request.form.get('data_fim')
+    hora_fim = request.form.get('hora_fim')
+    idTurma = request.form.get('idTurma')
+    geoloc = request.form.get('geoloc')
+    
+    horario_inico = data_ini + " " + hora_ini + ":00.000"
+    horario_fim = data_fim + " " + hora_fim + ":00.000"
+
+    conn = conexao()    
+    cur = conn.cursor()
+    
+    cur.execute("INSERT into aula (dthr_ini_aula, dthr_fim_aula, local_aula, id_turma) VALUES(%s,%s,%s,%s)", (horario_inico, horario_fim, geoloc, idTurma))
+
+    query = "SELECT id_aula FROM aula WHERE dthr_ini_aula = %s AND dthr_fim_aula = %s AND id_turma = %s;"
+    cur.execute(query, [horario_inico, horario_fim, idTurma])
+    idAula = cur.fetchall() 
+    
+    query = "SELECT id_aluno FROM aluno_turma WHERE id_turma = %s;"
+    cur.execute(query, [idTurma])
+    alunos_na_turma = cur.fetchall()    
+    
+    # for aluno in alunos_na_turma:
+    #     cur.execute("INSERT into aluno_aula (id_aluno, id_aula, id_presenca_aluno_aula) VALUES(%s,%s,%s)", (aluno[0], idAula[0][0], 0))
+        
+    
+
+    conn.commit()
+    cur.close()
+    conn.close()
+
+    return render_template("turma.html")
+
+
