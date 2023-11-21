@@ -20,6 +20,7 @@ CORS(app)
 ..######...#######..##....##.########.##.....##.##.....##..#######.
 """
 TIPO_DICT = {'aluno': 1, 'professor': 2}
+TIPO_USER = 0
 presenca_dict = {'ausente': 0, 'presente': 1, 'abono':2}
 
 def conexao():
@@ -74,10 +75,12 @@ def login():
         if dados[0][1] == senha:
             x = False
             session["id_usuario"] = dados[0][2]
-            query = "SELECT cod_disciplina, desc_turma, periodo FROM aluno_turma INNER JOIN turma ON aluno_turma.id_turma = turma.id_turma WHERE id_aluno = %s;"
+            query = "SELECT cod_disciplina, desc_turma, periodo, aluno_turma.id_turma FROM aluno_turma INNER JOIN turma ON aluno_turma.id_turma = turma.id_turma WHERE id_aluno = %s;"
             cur.execute(query, [session.get("id_usuario")])
             dados_turmas = cur.fetchall()
             session['dados'] = dados_turmas
+            global TIPO_USER
+            TIPO_USER = 1
             conn.commit()
             cur.close()
             conn.close()            
@@ -96,7 +99,9 @@ def login():
             query = "SELECT cod_disciplina, desc_turma, periodo, id_turma FROM turma WHERE id_professor = %s;"
             cur.execute(query, [session.get("id_usuario")])
             dados_turmas = cur.fetchall()
-            session['dados'] = dados_turmas            
+            session['dados'] = dados_turmas
+            TIPO_USER
+            TIPO_USER = 2
             conn.commit()
             cur.close()
             conn.close()
@@ -236,7 +241,6 @@ def show_turma(idTurma):
 @app.route("/show_aula/<idTurma>", methods=["POST","GET"])
 def show_aula(idTurma):
 
-    print(idTurma)
     conn = conexao()
     cur = conn.cursor()
     query = "SELECT desc_turma, id_aula, dthr_ini_aula, dthr_fim_aula FROM aula INNER JOIN turma ON turma.id_turma = aula.id_turma WHERE turma.id_turma = %s;"
@@ -244,6 +248,15 @@ def show_aula(idTurma):
     alunos_aula = cur.fetchall()
     session['dados'] = alunos_aula
     session['idTurma'] = idTurma
+    print("---------------------------------------------------------------------")
+    print("---------------------------------------------------------------------")
+    print("---------------------------------------------------------------------")
+    print(TIPO_DICT)
+    print(TIPO_USER)
+    print("---------------------------------------------------------------------")
+    print("---------------------------------------------------------------------")
+    print("---------------------------------------------------------------------")
+    session['TIPO_DICT'] = TIPO_DICT
     conn.commit()
     cur.close()
     conn.close()
