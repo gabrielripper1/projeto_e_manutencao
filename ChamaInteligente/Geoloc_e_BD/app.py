@@ -81,6 +81,7 @@ def login():
             session['dados'] = dados_turmas
             global TIPO_USER
             TIPO_USER = 1
+            session['TIPO_USER'] = TIPO_USER
             conn.commit()
             cur.close()
             conn.close()            
@@ -100,8 +101,8 @@ def login():
             cur.execute(query, [session.get("id_usuario")])
             dados_turmas = cur.fetchall()
             session['dados'] = dados_turmas
-            TIPO_USER
             TIPO_USER = 2
+            session['TIPO_USER'] = TIPO_USER
             conn.commit()
             cur.close()
             conn.close()
@@ -247,16 +248,7 @@ def show_aula(idTurma):
     cur.execute(query, [idTurma])
     alunos_aula = cur.fetchall()
     session['dados'] = alunos_aula
-    session['idTurma'] = idTurma
-    print("---------------------------------------------------------------------")
-    print("---------------------------------------------------------------------")
-    print("---------------------------------------------------------------------")
-    print(TIPO_DICT)
-    print(TIPO_USER)
-    print("---------------------------------------------------------------------")
-    print("---------------------------------------------------------------------")
-    print("---------------------------------------------------------------------")
-    session['TIPO_DICT'] = TIPO_DICT
+    session['TIPO_USER'] = TIPO_USER
     conn.commit()
     cur.close()
     conn.close()
