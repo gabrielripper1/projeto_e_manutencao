@@ -6,6 +6,15 @@
     <title>Aula</title>
 </head>
 <body>
+    <h1>Horário de Término da chamada:</h1>    
+    <h2>{{session.get("dados")[0][3].time()}}</h2>
+    <form action="/muda_fim_aula" method="post">
+        <section id="muda_fim_aula">            
+            <input type="hidden" name="horario_anterior" value={{session.get("dados")[0][3]}}>
+            <input type="time" id="horario" name="horario" required/>
+            <button type ="submit" value="muda_fim_aula" id="btn-muda_fim_aula">Muda horário de fim da aula</button>                
+        </section>
+    </form>    
     <div>        
         <table>
             <tr>                
@@ -18,19 +27,21 @@
                 <td>{{aluno[0]}}</td>
                 <td>{{aluno[2]}}</td>
                      
-                <td><form action="/muda_presenca" method="post">
-                    <section id="muda_presenca">  
-                        <input type="hidden" name="idAluno" value={{aluno[1]}}>                      
-                        <label for="presenca">Presença:</label>
-                        <select name="presenca" id="presenca">
-                            <option value="spaceholder"></option>
-                            <option value="ausente">Ausente</option>
-                            <option value="presente">Presente</option>
-                            <option value="abono">Abono</option>
-                        </select>
-                        <button type ="submit" value="altera_presenca" id="btn-entrar">Alterar presença</button>                
-                    </section>
-                </form></td>
+                <td>
+                    <form action="/muda_presenca" method="post">
+                        <section id="muda_presenca">  
+                            <input type="hidden" name="idAluno" value={{aluno[1]}}>                      
+                            <label for="presenca">Presença:</label>
+                            <select name="presenca" id="presenca">
+                                <option value="spaceholder"></option>
+                                <option value="ausente">Ausente</option>
+                                <option value="presente">Presente</option>
+                                <option value="abono">Abono</option>
+                            </select>
+                            <button type ="submit" value="altera_presenca" id="btn-entrar">Alterar presença</button>                
+                        </section>
+                    </form>
+                </td>
                 <!-- <td><a class="btn btn-danger" type="button" href="/show_aula/{{aluno[1]}}">Ir para aula</a></td>                                                  -->
             </tr> 
             {% endfor %}

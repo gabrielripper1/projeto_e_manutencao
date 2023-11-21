@@ -238,11 +238,12 @@ def show_aula(idAula):
 
     conn = conexao()    
     cur = conn.cursor()
-    query = "SELECT aluno.nome, aluno.id_aluno, aluno_aula.id_presenca_aluno_aula  FROM aluno INNER JOIN aluno_aula ON aluno.id_aluno = aluno_aula.id_aluno WHERE aluno_aula.id_aula = %s;"
+    query = "SELECT aluno.nome, aluno.id_aluno, aluno_aula.id_presenca_aluno_aula, aula.dthr_fim_aula  FROM aluno INNER JOIN aluno_aula ON aluno.id_aluno = aluno_aula.id_aluno INNER JOIN aula ON aluno_aula.id_aula = aula.id_aula WHERE aluno_aula.id_aula = %s;"
     cur.execute(query, [idAula])
     alunos_aula = cur.fetchall()
     session['dados'] = alunos_aula
     session['idAula'] = idAula
+    
     conn.commit()
     cur.close()
     conn.close()   
@@ -265,5 +266,18 @@ def muda_presenca():
     conn.commit()
     cur.close()
     conn.close() 
+
+    return render_template("aula.html")
+
+@app.route("/muda_fim_aula", methods=["GET", "POST"])
+def muda_fim_aula():
+    horario = request.form.get('horario')
+    horario_anterior = request.form.get('horario_anterior')    
+    horario_novo = horario_anterior + " " + horario + ":00.000"
+    
+    # conn = conexao()    
+    # cur = conn.cursor()      
+    # query = "UPDATE public.aluno_aula SET id_presenca_aluno_aula = %s WHERE id_aluno = %s;"
+    # cur.execute(query, [presenca_dict[presenca], idAluno])
 
     return render_template("aula.html")
