@@ -57,7 +57,7 @@ def matricula_exists(tipo, matricula, conn, cur):
 
 
 @app.route("/")
-def index():
+def index():    
     return render_template("login.html")
 
 @app.route("/login", methods=["GET", "POST"])
@@ -213,19 +213,19 @@ def cria_turma():
     conn.close()
     return render_template("turma.html", flag_form=False)
 
-@app.route("/show_turma/<idTurma>", methods=["POST", "GET"])
-def show_turma(idTurma):
+# @app.route("/show_turma/<idTurma>", methods=["POST", "GET"])
+# def show_turma(idTurma):
 
-    conn = conexao()
-    cur = conn.cursor()
-    query = "SELECT id_aula, dthr_ini_aula, dthr_fim_aula FROM aula WHERE id_turma = %s;"
-    cur.execute(query, [idTurma])
-    aulas_turma = cur.fetchall()
-    conn.commit()
-    cur.close()
-    conn.close()
+#     conn = conexao()
+#     cur = conn.cursor()
+#     query = "SELECT id_aula, dthr_ini_aula, dthr_fim_aula FROM aula WHERE id_turma = %s;"
+#     cur.execute(query, [idTurma])
+#     aulas_turma = cur.fetchall()
+#     conn.commit()
+#     cur.close()
+#     conn.close()
 
-    return render_template("aula.html", aulas_turma=aulas_turma)
+#     return render_template("aula.html", aulas_turma=aulas_turma)
 
 
 
@@ -248,13 +248,20 @@ def show_aula(idTurma):
     cur.execute(query, [idTurma])
     alunos_aula = cur.fetchall()
     if len(alunos_aula) == 0:
-        alunos_aula = ['']    
+        alunos_aula = ['']
+    status_aulas = []    
+    for aula in alunos_aula:
+        tempo_agora = datetime.datetime.now()        
+        if aula[2] <= tempo_agora and (aula[3] >= tempo_agora):
+            status_aulas.append(1)
+        else:
+            status_aulas.append(0)             
     session['dados'] = alunos_aula
     session['TIPO_USER'] = TIPO_USER
     conn.commit()
     cur.close()
     conn.close()
-    return render_template("aula.html")
+    return render_template("aula.html", status_aulas=status_aulas)
 
 
 @app.route("/show_alunos/<idAula>", methods=["POST","GET"])

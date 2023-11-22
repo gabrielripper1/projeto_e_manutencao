@@ -69,12 +69,14 @@
 				</tr>
 			</thead>
 			<tbody>
-                {% for aulas_turma in session.get("dados") %}
-				<tr>
+                {% for aulas_turma in session.get("dados") %}				
+				<tr>					
 					<th scope="row">{{aulas_turma[2]}}</th>
 					<td>
 						{% if session.get("TIPO_USER") == 1 %}
-						<button type="button" class="btn btn-primary btn-agree" data-bs-toggle="modal" data-bs-target="#myModal"> Presença </button>
+							{% if status_aulas[loop.index0] == 1 %}
+								<button type="button" class="btn btn-primary btn-agree" data-bs-toggle="modal" data-bs-target="#myModal"> Presença </button>
+							{% endif %}
 						{% elif session.get("TIPO_USER") == 2 %}
 							<a class="btn btn-danger" type="button" href="/show_alunos/{{aulas_turma[1]}}">Relatório de Presença</a>
 						{% endif %}
