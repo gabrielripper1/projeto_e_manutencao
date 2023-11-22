@@ -320,10 +320,10 @@ def cria_chamada():
     
     query = "SELECT id_aluno FROM aluno_turma WHERE id_turma = %s;"
     cur.execute(query, [idTurma])
-    alunos_na_turma = cur.fetchall()    
-    
-    # for aluno in alunos_na_turma:
-    #     cur.execute("INSERT into aluno_aula (id_aluno, id_aula, id_presenca_aluno_aula) VALUES(%s,%s,%s)", (aluno[0], idAula[0][0], 0))
+    alunos_na_turma = cur.fetchall()       
+
+    for aluno in alunos_na_turma:        
+        cur.execute("INSERT into aluno_aula (id_aluno, id_aula, id_presenca_aluno_aula) VALUES(%s,%s,%s)", (aluno[0], idAula[0][0], 0))
         
     
 
