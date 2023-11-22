@@ -61,9 +61,9 @@
 
 
 
-        
-		<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#criar_turmas_modal"> Cria turma </button>
-
+        {% if session.get("TIPO_USER") == 2 %}
+			<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#criar_turmas_modal"> Cria turma </button>
+		{% endif %}
 
 
 
