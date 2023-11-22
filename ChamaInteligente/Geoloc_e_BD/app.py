@@ -309,7 +309,7 @@ def muda_presenca():
     return render_template("lista_alunos.html")
 
 @app.route("/registra_presenca/<idTurma>", methods=["GET", "POST"])
-def muda_presenca(idTurma):
+def registra_presenca(idTurma):
     presenca = request.form.get('presenca')
     idAluno = request.form.get('idAluno')
     idAula = session.get("idAula")
