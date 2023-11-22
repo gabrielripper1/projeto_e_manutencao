@@ -1,4 +1,4 @@
-from flask import Flask, render_template, send_from_directory, request, Response, session
+from flask import Flask, render_template, send_from_directory, request, Response, session, redirect
 import sqlite3
 import json
 import psycopg2
@@ -242,9 +242,10 @@ def cria_turma():
 @app.route("/show_aula/<idTurma>", methods=["POST","GET"])
 def show_aula(idTurma):
 
+    session['id_turma'] = idTurma
     conn = conexao()
     cur = conn.cursor()
-    query = "SELECT desc_turma, id_aula, dthr_ini_aula, dthr_fim_aula FROM aula INNER JOIN turma ON turma.id_turma = aula.id_turma WHERE turma.id_turma = %s;"
+    query = "SELECT desc_turma, id_aula, dthr_ini_aula, dthr_fim_aula FROM aula INNER JOIN turma ON turma.id_turma = aula.id_turma WHERE turma.id_turma = %s;"    
     cur.execute(query, [idTurma])
     alunos_aula = cur.fetchall()
     if len(alunos_aula) == 0:
@@ -255,7 +256,11 @@ def show_aula(idTurma):
         if aula[2] <= tempo_agora and (aula[3] >= tempo_agora):
             status_aulas.append(1)
         else:
-            status_aulas.append(0)             
+            status_aulas.append(0)    
+    # query = "SELECT id_aluno, id_turma, aluno_aula.id_aula, id_presenca_aluno_aula FROM aluno_aula INNER JOIN aula ON aluno_aula.id_aula = aula.id_aula WHERE aula.id_turma = %s AND aluno_aula.id_aluno = %s ;"
+    # cur.execute(query, [idTurma, session.get("id_usuario")])
+    # presencas_aluno = cur.fetchall()
+    # print(presencas_aluno)     
     session['dados'] = alunos_aula
     session['TIPO_USER'] = TIPO_USER
     conn.commit()
@@ -315,25 +320,35 @@ def show_alunos(idAula):
 
 #     return render_template("lista_alunos.html")
 
-@app.route("/registra_presenca/<idTurma>", methods=["GET", "POST"])
-def muda_presenca(idTurma):
-    presenca = request.form.get('presenca')
-    idAluno = request.form.get('idAluno')
-    idAula = session.get("idAula")
+@app.route("/registra_presenca/<idAula>", methods=["GET", "POST"])
+def registra_presenca(idAula):
+    
+    idAluno = session.get("id_usuario") 
+    idTurma =  session.get("id_turma")  
+    
     
     conn = conexao()    
     cur = conn.cursor()      
-    query = "UPDATE public.aluno_aula SET id_presenca_aluno_aula = %s WHERE id_aluno = %s;"
-    cur.execute(query, [presenca_dict[presenca], idAluno])
-    query = "SELECT aluno.nome, aluno.id_aluno, aluno_aula.id_presenca_aluno_aula  FROM aluno INNER JOIN aluno_aula ON aluno.id_aluno = aluno_aula.id_aluno WHERE aluno_aula.id_aula = %s;"
-    cur.execute(query, [idAula])
+    query = "UPDATE public.aluno_aula SET id_presenca_aluno_aula = %s WHERE id_aluno = %s AND id_aula = %s;"
+    cur.execute(query, ['1', idAluno, idAula])
+    query = "SELECT desc_turma, id_aula, dthr_ini_aula, dthr_fim_aula FROM aula INNER JOIN turma ON turma.id_turma = aula.id_turma WHERE turma.id_turma = %s;"    
+    cur.execute(query, [idTurma])
     alunos_aula = cur.fetchall()
-    session['dados'] = alunos_aula
+    if len(alunos_aula) == 0:
+        alunos_aula = ['']
+    status_aulas = []    
+    for aula in alunos_aula:
+        tempo_agora = datetime.datetime.now()        
+        if aula[2] <= tempo_agora and (aula[3] >= tempo_agora):
+            status_aulas.append(1)
+        else:
+            status_aulas.append(0)    
+       
     conn.commit()
     cur.close()
     conn.close() 
 
-    return render_template("registra_presenca.html")
+    return render_template("aula.html", status_aulas=status_aulas)
 
 @app.route("/move_cria_chamada/<idTurma>", methods=["GET", "POST"])
 def move_cria_chamada(idTurma):
