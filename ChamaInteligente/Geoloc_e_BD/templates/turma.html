@@ -61,9 +61,9 @@
 
 
 
-        
-		<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#criar_turmas_modal"> Cria turma </button>
-
+        {% if session.get("TIPO_USER") == 2 %}
+			<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#criar_turmas_modal"> Cria turma </button>
+		{% endif %}
 
 
 
@@ -115,21 +115,17 @@
 										<input class="form-control" id="cod_disciplina" name="cod_disciplina" type="text" placeholder="Código da disciplina" required />
 									</div>
 									<div class="form-outline col-4" style="display: inline;">
-										<label for="periodo">Período da disciplina:</label>
+										<label for="desc_turma">Descrição da turma:</label>
 										<input class="form-control" id="desc_turma" name="desc_turma" 	type="text" placeholder="Descrição da turma" size="50" required />
 									</div>
 									<div class="form-outline col-4" style="display: inline;">
-										<label for="desc_turma">Descrição da turma:</label>
+										<label for="periodo">Período da disciplina:</label>
 										<input class="form-control" id="periodo" name="periodo" type="text" placeholder="Período da disciplina" required />
 									</div>
+									<button class="btn btn-primary btn-block mb-4 btn-agree" type ="submit" value="criar" id="btn-criar_turma">Criar Turma</button>
         				        </div>
         				    </form>
         				</div>
-					</div>
-
-					<!-- Modal footer -->
-					<div class="modal-footer">
-						<button class="btn btn-primary btn-block mb-4 btn-agree" type ="submit" value="criar" id="btn-criar_turma">Criar Turma</button>
 					</div>
 				</div>
 			</div>
