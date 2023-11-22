@@ -63,20 +63,36 @@
 
 		<table class="table">
 			<thead>
+				{% if session.get("TIPO_USER") == 1 %}
+					<tr>
+						<th scope="col">Início da aula</th>
+						<th scope="col">Situação</th>
+						<th scope="col">Opções</th>
+					</tr>
+				{% elif session.get("TIPO_USER") == 2 %}
 				<tr>
 					<th scope="col">Início da aula</th>
 					<th scope="col">Opções</th>
 				</tr>
+				{% endif %}
 			</thead>
 			<tbody>
-                {% for aulas_turma in session.get("dados") %}
-				<tr>
+                {% for aulas_turma in session.get("dados") %}				
+				<tr>					
 					<th scope="row">{{aulas_turma[2]}}</th>
+					{% if session.get("TIPO_USER") == 1 %}
+					<th scope="row">{{status_aulas[loop.index0]}}</th>
+					{% endif %}
 					<td>
-						{% if session.get("TIPO_USER") == 1 %}
-						<button type="button" class="btn btn-primary btn-agree" data-bs-toggle="modal" data-bs-target="#myModal"> Presença </button>
-						<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#myModal"> Solicitar Abono de Falta </button>
+						{% if session.get("TIPO_USER") == 1 %}						
+							{% if status_aulas[loop.index0] == 1 %}							
+								<a class="btn btn-primary" type="button"  href="/registra_presenca/{{aulas_turma[1]}}">Presença</button>
+							{% endif %}
 						{% elif session.get("TIPO_USER") == 2 %}
+							<a class="btn btn-danger" type="button" href="/show_alunos/{{aulas_turma[1]}}">Relatório de Presença</a>
+						{% endif %}
+						<a class="btn btn-danger" type="button"  href=""> Solicitar Abono de Falta </button>
+						{% if session.get("TIPO_USER") == 2 %}
 							<a class="btn btn-danger" type="button" href="/show_alunos/{{aulas_turma[1]}}">Painel de Presença</a>
 						{% endif %}
 					</td>
