@@ -1,0 +1,32 @@
+.presentation-text.login-text {
+    color: #2e2a7d;
+}
+
+.login-box {
+    display: flex;
+    flex-direction: column;
+    place-content: center;
+    justify-content: space-evenly;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+form input.form-control {
+    margin: 0px 10px 10px;
+}
+
+.login-utils {
+    margin-left: -260px;
+}
+
+.form-functions {
+    margin-top: 60px;
+}
+/*
+.row.form-functions button {
+    height: 40px;
+    width: 50px;
+}
