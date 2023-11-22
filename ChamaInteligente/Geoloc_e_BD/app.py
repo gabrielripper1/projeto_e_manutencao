@@ -280,8 +280,43 @@ def show_alunos(idAula):
     conn.close()   
     return render_template("lista_alunos.html")
 
-@app.route("/muda_presenca", methods=["GET", "POST"])
-def muda_presenca():
+
+
+"""
+.########..########..########..######..########.##....##..######.....###...
+.##.....##.##.....##.##.......##....##.##.......###...##.##....##...##.##..
+.##.....##.##.....##.##.......##.......##.......####..##.##........##...##.
+.########..########..######....######..######...##.##.##.##.......##.....##
+.##........##...##...##.............##.##.......##..####.##.......#########
+.##........##....##..##.......##....##.##.......##...###.##....##.##.....##
+.##........##.....##.########..######..########.##....##..######..##.....##
+.........................................................####..............
+.......................................................####................
+"""
+
+
+# @app.route("/muda_presenca", methods=["GET", "POST"])
+# def muda_presenca():
+#     presenca = request.form.get('presenca')
+#     idAluno = request.form.get('idAluno')
+#     idAula = session.get("idAula")
+    
+#     conn = conexao()    
+#     cur = conn.cursor()      
+#     query = "UPDATE public.aluno_aula SET id_presenca_aluno_aula = %s WHERE id_aluno = %s;"
+#     cur.execute(query, [presenca_dict[presenca], idAluno])
+#     query = "SELECT aluno.nome, aluno.id_aluno, aluno_aula.id_presenca_aluno_aula  FROM aluno INNER JOIN aluno_aula ON aluno.id_aluno = aluno_aula.id_aluno WHERE aluno_aula.id_aula = %s;"
+#     cur.execute(query, [idAula])
+#     alunos_aula = cur.fetchall()
+#     session['dados'] = alunos_aula
+#     conn.commit()
+#     cur.close()
+#     conn.close() 
+
+#     return render_template("lista_alunos.html")
+
+@app.route("/registra_presenca/<idTurma>", methods=["GET", "POST"])
+def muda_presenca(idTurma):
     presenca = request.form.get('presenca')
     idAluno = request.form.get('idAluno')
     idAula = session.get("idAula")
@@ -298,7 +333,7 @@ def muda_presenca():
     cur.close()
     conn.close() 
 
-    return render_template("lista_alunos.html")
+    return render_template("registra_presenca.html")
 
 @app.route("/move_cria_chamada/<idTurma>", methods=["GET", "POST"])
 def move_cria_chamada(idTurma):

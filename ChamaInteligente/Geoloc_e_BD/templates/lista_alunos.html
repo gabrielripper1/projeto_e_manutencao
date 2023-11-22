@@ -6,7 +6,10 @@
     <title>Aula</title>
 </head>
 <body>
-    <div>        
+    <div>
+        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#myModal"> Relatório de frequencia de alunos presentes </button>
+        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#myModal"> Relatório de quantos alunos já foram reprovados </button>
+        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#myModal"> Relatório de alunos inscritos na matéria </button>
         <table>
             <tr>                
                 <th>Aluno</th>
@@ -28,7 +31,8 @@
                             <option value="presente">Presente</option>
                             <option value="abono">Abono</option>
                         </select>
-                        <button type ="submit" value="altera_presenca" id="btn-entrar">Alterar presença</button>                
+                        <button type ="submit" value="altera_presenca" id="btn-entrar">Alterar presença</button>
+                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#myModal">Aprovar Abono de Falta</button>
                     </section>
                 </form></td>
                 <!-- <td><a class="btn btn-danger" type="button" href="/show_aula/{{aluno[1]}}">Ir para aula</a></td>                                                  -->

@@ -14,7 +14,7 @@
 <body>
     <nav class="navbar navbar-expand-lg navbar-dark">
 		<div class="container-fluid">
-			<a class="navbar-brand" href="index.html">HOME</a>
+			<a class="navbar-brand" href="turma.html">Chamada Inteligente</a>
 			<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
 				aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
 				<span class="navbar-toggler-icon"></span>
@@ -89,11 +89,13 @@
 					<td>
                         <a class="btn btn-danger" type="button" href="/show_aula/{{turma[3]}}">Ir para aulas</a>
 					</td>
-					{% if session.get("TIPO_USER") == 2 %}
-						<td>
-							<a class="btn btn-primary" type="button" href="/move_cria_chamada/{{turma[3]}}">Criar Chamada</a>
-						</td>
-					{% endif %}
+					<td>
+						{% if session.get("TIPO_USER") == 1 %}
+                        	<a class="btn btn-primary" type="button" href="/update_presenca/{{turma[3]}}">Marcar Presença</a>
+						{% elif session.get("TIPO_USER") == 2 %}
+                        	<a class="btn btn-primary" type="button" href="/move_cria_chamada/{{turma[3]}}">Criar Chamada</a>
+						{% endif %}
+					</td>
 				</tr>
                 {% endfor %}
 			</tbody>
