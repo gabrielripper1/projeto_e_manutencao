@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aula</title>
+</head>
+<body>
+    <div>
+        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#myModal"> Relatório de frequencia de alunos presentes </button>
+        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#myModal"> Relatório de quantos alunos já foram reprovados </button>
+        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#myModal"> Relatório de alunos inscritos na matéria </button>
+        <table>
+            <tr>                
+                <th>Aluno</th>
+                <th>Presença</th>                                
+            </tr>
+            
+            {% for aluno in session.get("dados") %}
+            <tr>                
+                <td>{{aluno[0]}}</td>
+                <td>{{aluno[2]}}</td>
+                     
+                <td><form action="/muda_presenca" method="post">
+                    <section id="muda_presenca">  
+                        <input type="hidden" name="idAluno" value={{aluno[1]}}>                      
+                        <label for="presenca">Presença:</label>
+                        <select name="presenca" id="presenca">
+                            <option value="spaceholder"></option>
+                            <option value="ausente">Ausente</option>
+                            <option value="presente">Presente</option>
+                            <option value="abono">Abono</option>
+                        </select>
+                        <button type ="submit" value="altera_presenca" id="btn-entrar">Alterar presença</button>
+                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#myModal">Aprovar Abono de Falta</button>
+                    </section>
+                </form></td>
+                <!-- <td><a class="btn btn-danger" type="button" href="/show_aula/{{aluno[1]}}">Ir para aula</a></td>                                                  -->
+            </tr> 
+            {% endfor %}
+        </table> 
+    </div>
+</body>
+</html>

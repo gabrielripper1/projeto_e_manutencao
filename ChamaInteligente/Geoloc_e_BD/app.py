@@ -309,7 +309,7 @@ def muda_presenca():
     return render_template("lista_alunos.html")
 
 @app.route("/registra_presenca/<idTurma>", methods=["GET", "POST"])
-def muda_presenca(idTurma):
+def registra_presenca(idTurma):
     presenca = request.form.get('presenca')
     idAluno = request.form.get('idAluno')
     idAula = session.get("idAula")
@@ -339,38 +339,43 @@ def move_cria_chamada(idTurma):
 
 @app.route("/cria_chamada", methods=["GET", "POST"])
 def cria_chamada():
-    data_ini = request.form.get('data_ini')
-    hora_ini = request.form.get('hora_ini')
-    data_fim = request.form.get('data_fim')
-    hora_fim = request.form.get('hora_fim')
-    idTurma = request.form.get('idTurma')
-    geoloc = request.form.get('geoloc')
-    
-    horario_inico = data_ini + " " + hora_ini + ":00.000"
-    horario_fim = data_fim + " " + hora_fim + ":00.000"
-
-    conn = conexao()    
+    conn = conexao()
     cur = conn.cursor()
+    query = "SELECT aluno.nome, aluno.id_aluno, aluno_aula.id_presenca_aluno_aula, aula.dthr_fim_aula  FROM aluno INNER JOIN aluno_aula ON aluno.id_aluno = aluno_aula.id_aluno INNER JOIN aula ON aluno_aula.id_aula = aula.id_aula WHERE aluno_aula.id_aula = %s;"
+    cur.execute(query, [idAula])
+    alunos_aula = cur.fetchall()
+    session['dados'] = alunos_aula
+    session['idAula'] = idAula
     
-    cur.execute("INSERT into aula (dthr_ini_aula, dthr_fim_aula, local_aula, id_turma) VALUES(%s,%s,%s,%s)", (horario_inico, horario_fim, geoloc, idTurma))
-
-    query = "SELECT id_aula FROM aula WHERE dthr_ini_aula = %s AND dthr_fim_aula = %s AND id_turma = %s;"
-    cur.execute(query, [horario_inico, horario_fim, idTurma])
-    idAula = cur.fetchall() 
-    
-    query = "SELECT id_aluno FROM aluno_turma WHERE id_turma = %s;"
-    cur.execute(query, [idTurma])
-    alunos_na_turma = cur.fetchall()    
-    
-    # for aluno in alunos_na_turma:
-    #     cur.execute("INSERT into aluno_aula (id_aluno, id_aula, id_presenca_aluno_aula) VALUES(%s,%s,%s)", (aluno[0], idAula[0][0], 0))
-        
-    
-
     conn.commit()
     cur.close()
-    conn.close()
+    conn.close()   
+    return render_template("lista_alunos.html")
 
-    return render_template("turma.html")
 
+"""
+ ██▀███  ▓█████  ██▓    ▄▄▄     ▄▄▄█████▓ ▒█████   ██▀███   ██▓ ▒█████  
+▓██ ▒ ██▒▓█   ▀ ▓██▒   ▒████▄   ▓  ██▒ ▓▒▒██▒  ██▒▓██ ▒ ██▒▓██▒▒██▒  ██▒
+▓██ ░▄█ ▒▒███   ▒██░   ▒██  ▀█▄ ▒ ▓██░ ▒░▒██░  ██▒▓██ ░▄█ ▒▒██▒▒██░  ██▒
+▒██▀▀█▄  ▒▓█  ▄ ▒██░   ░██▄▄▄▄██░ ▓██▓ ░ ▒██   ██░▒██▀▀█▄  ░██░▒██   ██░
+░██▓ ▒██▒░▒████▒░██████▒▓█   ▓██▒ ▒██▒ ░ ░ ████▓▒░░██▓ ▒██▒░██░░ ████▓▒░
+░ ▒▓ ░▒▓░░░ ▒░ ░░ ▒░▓  ░▒▒   ▓▒█░ ▒ ░░   ░ ▒░▒░▒░ ░ ▒▓ ░▒▓░░▓  ░ ▒░▒░▒░ 
+  ░▒ ░ ▒░ ░ ░  ░░ ░ ▒  ░ ▒   ▒▒ ░   ░      ░ ▒ ▒░   ░▒ ░ ▒░ ▒ ░  ░ ▒ ▒░ 
+  ░░   ░    ░     ░ ░    ░   ▒    ░      ░ ░ ░ ▒    ░░   ░  ▒ ░░ ░ ░ ▒  
+   ░        ░  ░    ░  ░     ░  ░            ░ ░     ░      ░      ░ ░  
+"""
 
+@app.route("/relatorio_alunos_aula/<idAula>", methods=["GET", "POST"])
+def relatorio_alunos_aula():
+    conn = conexao()
+    cur = conn.cursor()
+    query = " select * from listaalunoscompresenca(%s);"
+    cur.execute(query, [idAula])
+    alunos_aula = cur.fetchall()
+    session['dados'] = alunos_aula
+    session['idAula'] = idAula
+    
+    conn.commit()
+    cur.close()
+    conn.close()   
+    return render_template("relatorio_alunos_aula.html")
