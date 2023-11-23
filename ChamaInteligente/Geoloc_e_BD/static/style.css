@@ -35,6 +35,18 @@ ul.navbar-nav > li:nth-child(1) > a {
     overflow: auto;
     
 }
+
+.container-lista-alunos {
+    max-width: 1300px;
+    background-color: white;
+    padding: 20px;
+    border-radius: 10px;
+    margin-top: 40px;height: 500PX;
+    border-top: 8px solid #ffa835;
+    overflow: auto;
+    
+}
+
 .presentation-text {
     text-align:center;
     color: #bb6b00;
@@ -43,6 +55,18 @@ ul.navbar-nav > li:nth-child(1) > a {
 .presentation-text.one-job {
     margin-bottom: 110px;
     color: #48439f;
+}
+
+.btn-relatorio,
+.btn-relatorio:focus,
+.btn-relatorio:hover,
+.btn-relatorio:active {
+    color:white;
+    margin-top:40px;
+    margin-left: 20px;
+    margin-right: 20px;
+    background-color:#6c68b2;
+    border-color:#6c68b2;
 }
 
 footer {

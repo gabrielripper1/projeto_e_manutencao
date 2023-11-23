@@ -42,21 +42,24 @@
                             </div>
                         </li>
                     </ul>
-                    <a class="navbar-brand" href="login prof.html">Sair
+                    <a class="navbar-brand" href="/login">Sair
                         <svg xmlns="http://www.w3.org/2000/svg" width="20" fill="Red" height="16" fill="currentColor"
                             class="bi bi-door-open-fill" viewBox="0 0 20 20"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" 	stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g id="layer1"> <path d="M 0 1 L 0 20 L 12 20 L 12 16 L 11 16 L 11 19 L 1 19 L 1 2 L 11 2 L 11 5 L 12 5 L 12 	1 L 0 1 z M 15 7 L 18 10 L 5 10 L 5 11 L 18 11 L 15 14 L 16.5 14 L 20 10.5 L 16.5 7 L 15 7 z " style="fill:#ffffff; fill-opacity:1; stroke:none; stroke-width:0px;"></	path></g></g></svg>
                     </a>
                 </div>
             </div>
         </nav>
+
+        <div class="d-flex justify-content-center">
         <!-- <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#myModal"> Relatório de frequencia de alunos presentes </button> -->
-        <a class="btn btn-primary" type="button" href="/relatorio_alunos_aula/{{session.get('idAula')}}">Relatório de frequencia de alunos presentes</a>
+        <a class="btn btn-relatorio" type="button" href="/relatorio_alunos_aula/{{session.get('idAula')}}">Relatório de frequencia de alunos presentes</a>
         <!-- <a class="btn btn-primary" type="button" href="/relatorio_alunos_aula/{{session.get('idAula')}}">Relatório de frequencia de alunos presentes</a> -->
-        <a class="btn btn-primary" type="button" href="/lista_alunos_turma/{{session.get('idTurma')}}">Relatório de alunos inscritos na matéria</a>
+        <a class="btn btn-relatorio" type="button" href="/lista_alunos_turma/{{session.get('idTurma')}}">Relatório de alunos inscritos na matéria</a>
         <!-- <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#myModal"> Relatório de quantos alunos já foram reprovados </button>
         <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#myModal"> Relatório de alunos inscritos na matéria </button> -->
-        
-        <div class="container container-geral">   
+        </div>
+
+        <div class="container container-lista-alunos">   
             <h2 class="presentation-text">Relatório de presença da Aula {{session.get("idAula") }}</h2>   
             
             <table  class="table">
@@ -80,8 +83,8 @@
                                 <option value="presente">Presente</option>
                                 <option value="abono">Abono</option>
                             </select>
-                            <button type ="submit" class= "btn btn-danger" value="altera_presenca" id="btn-entrar">Alterar presença</button>
-                            <button type="button" class="btn btn-agree" data-bs-toggle="modal" data-bs-target="#myModal">Aprovar Abono de Falta</button>
+                            <button type ="submit" class= "btn btn-danger btn-sm" value="altera_presenca" id="btn-entrar">Alterar presença</button>
+                            <button type="button" class="btn btn-agree btn-sm" data-bs-toggle="modal" data-bs-target="#myModal">Aprovar Abono de Falta</button>
                         </section>
                     </form></td>
                     <!-- <td><a class="btn btn-danger" type="button" href="/show_aula/{{aluno[1]}}">Ir para aula</a></td>                                                  -->
