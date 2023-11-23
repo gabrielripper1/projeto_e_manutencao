@@ -49,12 +49,16 @@
                 </div>
             </div>
         </nav>
-        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#myModal"> Relatório de frequencia de alunos presentes </button>
-        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#myModal"> Relatório de quantos alunos já foram reprovados </button>
-        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#myModal"> Relatório de alunos inscritos na matéria </button>
+        <!-- <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#myModal"> Relatório de frequencia de alunos presentes </button> -->
+        <a class="btn btn-primary" type="button" href="/relatorio_alunos_aula/{{session.get('idAula')}}">Relatório de frequencia de alunos presentes</a>
+        <!-- <a class="btn btn-primary" type="button" href="/relatorio_alunos_aula/{{session.get('idAula')}}">Relatório de frequencia de alunos presentes</a> -->
+        <a class="btn btn-primary" type="button" href="/lista_alunos_turma/{{session.get('idTurma')}}">Relatório de alunos inscritos na matéria</a>
+        <!-- <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#myModal"> Relatório de quantos alunos já foram reprovados </button>
+        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#myModal"> Relatório de alunos inscritos na matéria </button> -->
         
         <div class="container container-geral">   
             <h2 class="presentation-text">Relatório de presença da Aula {{session.get("idAula") }}</h2>   
+            
             <table  class="table">
                 <tr>                
                     <th scope="col">Aluno</th>

@@ -268,6 +268,11 @@ def show_alunos(idAula):
     session['dados'] = alunos_aula
     session['idAula'] = idAula
     
+    query2 = "SELECT id_turma from aula WHERE id_aula = %s;"
+    cur.execute(query2, [idAula])
+    idTurma = cur.fetchone()
+    session['idTurma'] = idTurma[0]
+    
     conn.commit()
     cur.close()
     conn.close()   
@@ -366,7 +371,7 @@ def cria_chamada():
 """
 
 @app.route("/relatorio_alunos_aula/<idAula>", methods=["GET", "POST"])
-def relatorio_alunos_aula():
+def relatorio_alunos_aula(idAula):
     conn = conexao()
     cur = conn.cursor()
     query = " select * from listaalunoscompresenca(%s);"
@@ -379,3 +384,21 @@ def relatorio_alunos_aula():
     cur.close()
     conn.close()   
     return render_template("relatorio_alunos_aula.html")
+
+
+
+@app.route("/lista_alunos_turma/<idTurma>", methods=["GET", "POST"])
+def relatorio_alunos_turma(idTurma):
+    conn = conexao()
+    cur = conn.cursor()
+    query = " select * from lista_alunos_turma(%s);"
+    cur.execute(query, [idTurma])
+    alunos_aula = cur.fetchall()
+    session['dados'] = alunos_aula
+    session['idTurma'] = idTurma
+    session['txtTurma'] = alunos_aula[1]
+    
+    conn.commit()
+    cur.close()
+    conn.close()   
+    return render_template("relatorio_alunos_turma.html")

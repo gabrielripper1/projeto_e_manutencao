@@ -11,9 +11,9 @@
         <table>
             <tr>                
                 <th>Aluno</th>
-                <th>Presença</th>                                
+                <th>Matrícula</th>                                
             </tr>
-            <h2 class="presentation-text">Relatório de presença da Aula {{session.get("txtTurma") }}</h2>
+            <h2 class="presentation-text">Relatório de Alunos da Turma {{session.get("txtTurma") }}</h2>
             {% for aluno in session.get("dados") %}
             <tr>                
                 <td>{{aluno[0]}}</td>
