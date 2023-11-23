@@ -32,6 +32,8 @@ ul.navbar-nav > li:nth-child(1) > a {
     border-radius: 10px;
     margin-top: 90px;height: 500PX;
     border-top: 8px solid #ffa835;
+    overflow: auto;
+    
 }
 .presentation-text {
     text-align:center;
@@ -67,6 +69,7 @@ footer {
 .btn-agree:active {
     background-color: #339574;
     border-color: #339574;
+    color:white;
 }
 
 .btn-check:focus+.btn-primary, 
