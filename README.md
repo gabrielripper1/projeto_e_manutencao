@@ -12,15 +12,18 @@ Este é um projeto que utiliza Flask para integração com Banco de Dados.
     ```
 
 2. Crie um ambiente virtual:
-    ```python -m venv venv
+    ```bash
+        python -m venv venv
     ```
 
 3. Ative o ambiente virtual:
-    ```.\venv\Scripts\Activate.ps1
+    ```bash
+        .\venv\Scripts\Activate.ps1
     ```
 
 4. Instalar as dependências necessárias:
-    ```pip install -r requirements.txt
+    ```bash
+        pip install -r requirements.txt
     ```
 
 ## Executando o Projeto
@@ -30,7 +33,8 @@ Este é um projeto que utiliza Flask para integração com Banco de Dados.
 2. Certificar que está na pasta `ChamaInteligente/Geoloc_e_BD`.
 
 3. Execute o comando iniciar o servidor:
-    ```flask run
+    ```bash
+        flask run
     ```
 
 4. O aplicativo estará acessível em `http://127.0.0.1:5000/` no seu navegador.
