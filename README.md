@@ -13,17 +13,17 @@ Este é um projeto que utiliza Flask para integração com Banco de Dados.
 
 2. Crie um ambiente virtual:
     ```bash
-        python -m venv venv
+    python -m venv venv
     ```
 
 3. Ative o ambiente virtual:
     ```bash
-        .\venv\Scripts\Activate.ps1
+    .\venv\Scripts\Activate.ps1
     ```
 
 4. Instalar as dependências necessárias:
     ```bash
-        pip install -r requirements.txt
+    pip install -r requirements.txt
     ```
 
 ## Executando o Projeto
@@ -34,7 +34,7 @@ Este é um projeto que utiliza Flask para integração com Banco de Dados.
 
 3. Execute o comando iniciar o servidor:
     ```bash
-        flask run
+    flask run
     ```
 
 4. O aplicativo estará acessível em `http://127.0.0.1:5000/` no seu navegador.
